@@ -128,8 +128,17 @@ def send_message(to_user, access_token, region_name, weather, temp, wind_dir, no
     love_month = int(config["love_date"].split("-")[1])
     love_day = int(config["love_date"].split("-")[2])
     love_date = date(love_year, love_month, love_day)
+    # 获取考研的日期格式
+    kaoyan_year = int(config["kaoyan_date"].split("-")[0])
+    kaoyan_month = int(config["kaoyan_date"].split("-")[1])
+    kaoyan_day = int(config["kaoyan_date"].split("-")[2])
+    kaoyan_date = date(kaoyan_year, kaoyan_month, kaoyan_day)
     # 获取在一起的日期差
     love_days = str(today.__sub__(love_date)).split(" ")[0]
+    # 获取考研的日期差
+    kaoyan_days = str(today.__sub__(kaoyan_date)).split(" ")[0]
+
+
     # 获取所有生日数据
     birthdays = {}
     for k, v in config.items():
@@ -165,6 +174,10 @@ def send_message(to_user, access_token, region_name, weather, temp, wind_dir, no
                 "value": love_days,
                 "color": get_color()
             },
+            "kaoyan_day": {
+                "value": int(kaoyan_days)*(-1),
+                "color": get_color()
+            },
             "note_en": {
                 "value": note_en,
                 "color": get_color()
@@ -184,6 +197,7 @@ def send_message(to_user, access_token, region_name, weather, temp, wind_dir, no
             birthday_data = "距离{}的生日还有{}天".format(value["name"], birth_day)
         # 将生日数据插入data
         data["data"][key] = {"value": birthday_data, "color": get_color()}
+
     headers = {
         'Content-Type': 'application/json',
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
